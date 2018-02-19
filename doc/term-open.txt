@@ -1,21 +1,14 @@
-*term-open.txt* `termopen` function for NeoVim.
-*term-info*
+*term-open.txt*  A smarter `termopen` function for NeoVim.
+*term-open*
 
 ==============================================================================
 CONTENTS                                                    *term-open-contents*
 
-    INTRO .......................................... |term-info-intro|
-    USAGE .......................................... |term-info-usage|
-    FUNCTIONS....................................... |term-info-functions|
-
-==============================================================================
-INTRO                                                          *term-info-intro*
-
-A smarter `termopen` function for NeoVim.
+    USAGE       .................................... |term-info-usage|
+    FUNCTIONS   .................................... |term-info-functions|
 
 ==============================================================================
 USAGE                                                          *term-info-usage*
-
 >
   " In a new tab in insert mode
   :call TermOpen("/bin/zsh", { "location" : "tab", "insert" : 1 })
@@ -27,22 +20,26 @@ USAGE                                                          *term-info-usage*
   " Personally, I map TermOpenConsole in my `init.vim`:
   nmap <leader>T :call TermOpenConsole("/bin/zsh")<CR>
 <
-
 ==============================================================================
 FUNCTIONS                                                  *term-info-functions*
 
-TermOpen({cmd}[, {opts}]}"                                          *TermOpen()*
+TermOpen({cmd}[, {opts}]}                                           *TermOpen()*
     Open a terminal in a buffer, window, or tab and optionally in Insert mode.
 
-    Expands the {opts} argument of the |termopen| function to allow "location",
-    which can be "buffer", "window" or "tab" to open in a new location of 
-    choice, "command", command(s) to execute after opening, and "insert", start 
-    insert mode after opening the terminal and running "command" options.
+    Expands the {opts} argument of the |termopen| function to allow the
+    following keys:
 
-TermOpenConsole({cmd}[, {opts}]}"                                   *TermOpen()*
+        'location'  Can be 'buffer', 'window' or 'tab'.
+        'command'   Command(s) to execute after opening.
+        'insert'    Start insert mode after opening the terminal and running.
+                    the 'command' option, if any.
+
+TermOpenConsole({cmd}[, {opts}]}                             *TermOpenConsole()*
     Open a terminal a new window at the bottom of the screen in Insert mode.
 
-    Expands the {opts} argument of the |TermOpen| function to allow "resize",
-    the number of lines to resize the window to after opening (default: 10).
+    Expands the {opts} argument of the |termopen| function to allow the
+    following keys:
+
+        'resize'   Number of lines to resize to after opening (default: 10).
 
 ==============================================================================
