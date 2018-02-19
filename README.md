@@ -11,8 +11,10 @@ A smarter `termopen` function for NeoVim.
 ```vim
 " In a new tab in insert mode
 :call TermOpen("/bin/zsh", { "location" : "tab", "insert" : 1 })
+
 " In a new window, run `webpack --watch`, move to bottom of screen, resize to 10 lines, then move cursor back to previous window
 :call TermOpen("/usr/bin/webpack --watch", { "location" : "window", "command" : "wincmd J | resize 10 | wincmd p" })
+
 " Shortcut for opening a new window at the bottom of the screen, resized, and started in insert mode
 :call TermOpenConsole("/bin/zsh")
 ```
