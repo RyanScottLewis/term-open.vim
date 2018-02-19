@@ -30,7 +30,7 @@ it will open in a new tab. If I quickly type `h` after, it will open in a new wi
 
 ### Documentation
 
-Refer to `:help term-open` or `:help TermOpen` for more usage instructions.
+Refer to `:help term-open` for more usage instructions.
 
 ## Contributing
 
