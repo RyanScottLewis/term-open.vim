@@ -24,16 +24,29 @@ USAGE                                                          *term-info-usage*
 FUNCTIONS                                                  *term-info-functions*
 
 TermOpen({cmd}[, {opts}]}                                           *TermOpen()*
+
     Open a terminal in a buffer, window, or tab and optionally in Insert mode.
 
     Expands the {opts} argument of the |termopen| function to allow the
     following keys:
 
-        'location'  Can be 'buffer', 'window' or 'tab'.
-        'command'   Command(s) to execute after opening.
-        'insert'    Start insert mode after opening the terminal and running.
-                    the 'command' option, if any.
+      'location'  Can be 'buffer', 'window' or 'tab'.
+      'command'   Command(s) to execute after opening.
+      'insert'    Start insert mode after opening the terminal and running the
+                  'command' option, if any.
 
+    The 'buffer' value for the 'location' option may seem useless, but it comes
+    in handy when trying to open a terminal in a context without a buffer open,
+    such as a Startify command:
+>
+      let g:startify_commands = [
+      \   {'h': [ 'Help', ':help' ]},
+      \   {'t': [ 'Terminal', 'call TermOpen("/bin/zsh", {
+      \     "location" : "buffer",
+      \     "insert" : 1
+      \   })' ]}
+      \ ]
+<
 TermOpenConsole({cmd}[, {opts}]}                             *TermOpenConsole()*
     Open a terminal a new window at the bottom of the screen in Insert mode.
 

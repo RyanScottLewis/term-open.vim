@@ -30,6 +30,18 @@ nmap <leader>Th :call TermOpen("/bin/zsh", { "location" : "window", "insert" : 1
 In this setup, `<leader>T` will open a terminal in a bottom console, but if I quickly type `t` afterwards,
 it will open in a new tab. If I quickly type `h` after, it will open in a new window pulled to the right.
 
+To use with [Startify][startify], you need to set the `location` option (`"buffer"` is recommended):
+
+```vim
+let g:startify_commands = [
+\   {'h': [ 'Help', ':help' ]},
+\   {'t': [ 'Terminal', 'call TermOpen("/bin/zsh", {
+\     "location" : "buffer",
+\     "insert" : 1
+\   })' ]}
+\ ]
+```
+
 ### Documentation
 
 Refer to `:help term-open` for more usage instructions.
@@ -46,3 +58,4 @@ Refer to `:help term-open` for more usage instructions.
 
 - [RyanScottLewis](https://github.com/RyanScottLewis) Ryan Scott Lewis - creator, maintainer
 
+[Startify]: 
