@@ -56,6 +56,7 @@ Refer to `:help term-open` for more usage instructions.
 
 ## Contributors
 
-- [RyanScottLewis](https://github.com/RyanScottLewis) Ryan Scott Lewis - creator, maintainer
+- [RyanScottLewis][RyanScottLewis] Ryan Scott Lewis - creator, maintainer
 
-[Startify]: 
+[RyanScottLewis]: https://github.com/RyanScottLewis
+[Startify]: https://github.com/mhinz/vim-startify
