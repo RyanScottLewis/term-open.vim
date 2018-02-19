@@ -15,10 +15,18 @@ A smarter `termopen` function for NeoVim.
 :call TermOpen("/usr/bin/webpack --watch", { "location" : "window", "command" : "wincmd J | resize 10 | wincmd p" })
 " Shortcut for opening a new window at the bottom of the screen, resized, and started in insert mode
 :call TermOpenConsole("/bin/zsh")
-
-" Personally, I map TermOpenConsole in my `init.vim`:
-nmap <leader>T :call TermOpenConsole("/bin/zsh")<CR>
 ```
+
+Here is my usage in my `init.vim`:
+
+```vim
+nmap <leader>T :call TermOpenConsole("/bin/zsh")<CR>
+nmap <leader>Tt :call TermOpen("/bin/zsh", { "location" : "tab", "insert" : 1 })<CR>
+nmap <leader>Th :call TermOpen("/bin/zsh", { "location" : "window", "insert" : 1, "command" : "wincmd L" })<CR>
+```
+
+In this setup, `<leader>T` will open a terminal in a bottom console, but if I quickly type `t` afterwards,
+it will open in a new tab. If I quickly type `h` after, it will open in a new window pulled to the right.
 
 ### Documentation
 
