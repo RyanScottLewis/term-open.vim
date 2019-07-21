@@ -45,6 +45,28 @@ function! TermOpenConsole(cmd, ...)
   call TermOpen(a:cmd, opts)
 endfunction
 
-command! -nargs=+ TermOpen call TermOpen(<args>)
-command! -nargs=+ TermOpenConsole call TermOpenConsole(<args>)
+function! TermOpenCommand(cmd, ...)
+  let s:opts = {}
+
+  for arg in a:000
+     let partials = split(arg, '=')
+     let s:opts[partials[0]] = partials[1]
+  endfor
+
+  call TermOpen(a:cmd, s:opts)
+endfunction
+
+function! TermOpenConsoleCommand(cmd, ...)
+  let s:opts = {}
+
+  for arg in a:000
+     let partials = split(arg, '=')
+     let s:opts[partials[0]] = partials[1]
+  endfor
+
+  call TermOpenConsole(a:cmd, s:opts)
+endfunction
+
+command! -nargs=+ TermOpen call TermOpenCommand(<f-args>)
+command! -nargs=+ TermOpenConsole call TermOpenConsoleCommand(<f-args>)
 
