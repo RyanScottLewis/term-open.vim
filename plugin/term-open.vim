@@ -24,12 +24,22 @@ endfunction
 
 function! TermOpenConsole(cmd, ...)
   let opts     = (a:0 >= 1) ? a:1 : {}
-  let defaults = { "location" : "window", "command" : "wincmd J", "insert" : 1, "resize" : 10 }
+  let defaults = {
+  \   "location" : "window",
+  \   "command"  : "wincmd J",
+  \   "insert"   : 1,
+  \   "resize"   : 10,
+  \   "fixheight": 1
+  \ }
 
   call extend(opts, defaults, "keep")
 
   if has_key(opts, "resize")
     let opts.command = opts["command"] . " | resize " . opts["resize"]
+  endif
+
+  if has_key(opts, "fixheight")
+    let opts.command = opts["command"] . " | set winfixheight"
   endif
 
   call TermOpen(a:cmd, opts)

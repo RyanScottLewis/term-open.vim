@@ -53,6 +53,7 @@ TermOpenConsole({cmd}[, {opts}]}                             *TermOpenConsole()*
     Expands the {opts} argument of the |termopen| function to allow the
     following keys:
 
-        'resize'   Number of lines to resize to after opening (default: 10).
+        'resize'     Number of lines to resize to after opening (default: 10).
+        'fixheight'  Set `winfixheight` on the new window (default: 1).
 
 ==============================================================================
