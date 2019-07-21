@@ -45,3 +45,6 @@ function! TermOpenConsole(cmd, ...)
   call TermOpen(a:cmd, opts)
 endfunction
 
+command! -nargs=+ TermOpen call TermOpen(<args>)
+command! -nargs=+ TermOpenConsole call TermOpenConsole(<args>)
+
