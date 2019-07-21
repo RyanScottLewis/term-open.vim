@@ -1,39 +1,50 @@
 *term-open.txt*  A smarter `termopen` function for NeoVim.
 *term-open*
 
-==============================================================================
+================================================================================
 CONTENTS                                                    *term-open-contents*
 
     USAGE       .................................... |term-info-usage|
     FUNCTIONS   .................................... |term-info-functions|
+    COMMANDS    .................................... |term-info-commands|
 
-==============================================================================
+================================================================================
 USAGE                                                          *term-info-usage*
 >
   " In a new tab in insert mode
-  :call TermOpen("/bin/zsh", { "location" : "tab", "insert" : 1 })
+  :call TermOpen({ "location" : "tab", "insert" : 1 })
+  :TermOpen location=tab insert=1
+  :TermOpen location=tab insert
 
-  " Shortcut for opening a new window at the bottom of the screen, resized, and
-  " started in insert mode
-  :call TermOpenConsole("/bin/zsh")
+  " Shortcut for opening a new window at the bottom of the screen, resized,
+  " started in insert mode, with a fixed window height
+  :call TermOpen({ "console" : 1 })
+  :TermOpen console
 
   " Personally, I map TermOpenConsole in my `init.vim`:
-  nmap <leader>T :call TermOpenConsole("/bin/zsh")<CR>
+  nmap <leader>T :TermOpen console<CR>
 <
-==============================================================================
+================================================================================
 FUNCTIONS                                                  *term-info-functions*
 
-TermOpen({cmd}[, {opts}]}                                           *TermOpen()*
+TermOpen([{options}])                                               *TermOpen()*
 
     Open a terminal in a buffer, window, or tab and optionally in Insert mode.
 
-    Expands the {opts} argument of the |termopen| function to allow the
+    Expands the {options} argument of the |termopen| function to allow the
     following keys:
 
-      'location'  Can be 'buffer', 'window' or 'tab'.
-      'command'   Command(s) to execute after opening.
-      'insert'    Start insert mode after opening the terminal and running the
-                  'command' option, if any.
+      'command'    Initial terminal command.
+      'before'     Ex commands to run before running the command in the terminal.
+      'after'      Ex commands to run after running the command in the terminal.
+
+    The following options simply append the 'before' and 'after' options to add
+    functionality:
+
+      'location'   (before) Can be 'buffer', 'window' or 'tab'.
+      'insert'     (after)  Start insert mode.
+      'resize'     (after)  Resize the window to the given value.
+      'fixheight'  (after)  Resize the window to the given value.
 
     The 'buffer' value for the 'location' option may seem useless, but it comes
     in handy when trying to open a terminal in a context without a buffer open,
@@ -41,19 +52,37 @@ TermOpen({cmd}[, {opts}]}                                           *TermOpen()*
 >
       let g:startify_commands = [
       \   {'h': [ 'Help', ':help' ]},
-      \   {'t': [ 'Terminal', 'call TermOpen("/bin/zsh", {
-      \     "location" : "buffer",
-      \     "insert" : 1
-      \   })' ]}
+      \   {'t': [ 'Terminal', ':TermOpen location=buffer insert' ]}
       \ ]
 <
-TermOpenConsole({cmd}[, {opts}]}                             *TermOpenConsole()*
-    Open a terminal a new window at the bottom of the screen in Insert mode.
 
-    Expands the {opts} argument of the |termopen| function to allow the
-    following keys:
 
-        'resize'     Number of lines to resize to after opening (default: 10).
-        'fixheight'  Set `winfixheight` on the new window (default: 1).
+  The following options simply set other options:
+      'console'    Opens a bottom console with the following options:
+                     location     window
+                     after        windmc J
+                     insert       1
+                     resize       10
+                     fixheight    1
 
-==============================================================================
+================================================================================
+COMMANDS                                                    *term-info-commands*
+
+TermOpen([{options}])                                                *:TermOpen*
+
+    Delegates to the TermOpen() function.
+
+    Options may be passed by using "name=value" as arguments, for example:
+
+>
+    :TermOpen location=tab insert
+<
+
+    Is the same as:
+
+>
+    :call TermOpen({ "location" : "tab", "insert" : 1 })
+<
+
+================================================================================
+

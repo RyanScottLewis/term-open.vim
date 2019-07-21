@@ -1,72 +1,90 @@
-function! TermOpen(cmd, ...)
-  let opts = (a:0 >= 1) ? a:1 : {}
+let s:locationCommands = {
+\   'buffer' : 'enew',
+\   'window' : 'wincmd n',
+\   'tab'    : 'tabe'
+\ }
 
-  if has_key(opts, "location") " TODO: Type check needed?
-    if opts["location"] == "buffer" " TODO Use :execute! and a dict for this sort of thing
-      enew
-    elseif opts["location"] == "window"
-      wincmd n
-    elseif opts["location"] == "tab"
-      tabe
+let s:consoleOptions = {
+\   'location'  : 'window',
+\   'after'     : 'wincmd J',
+\   'insert'    : 1,
+\   'resize'    : 10,
+\   'fixheight' : 1
+\ }
+
+function! TermOpen(...)
+  let options = (a:0 >= 1) ? a:1 : {}
+  let defaults = { 'command': '$SHELL', 'before': '', 'after': '' }
+  call extend(options, defaults, 'keep')
+
+  " -- Console helper option -----------------------------------------------------------------------
+
+  if has_key(options, 'console')
+    if has_key(options, 'after')
+      let options.after = options.after . ' | ' . s:consoleOptions.after
+    endif
+
+    call extend(options, s:consoleOptions, 'keep')
+  endif
+
+  " -- Before hook helper options ------------------------------------------------------------------
+
+  if has_key(options, 'location')
+    let location = tolower(options.location)
+
+    if has_key(s:locationCommands, location)
+      let locationCommand = s:locationCommands[location]
+      let options.before = options.before . ' | ' . locationCommand
     endif
   endif
 
-  call termopen(a:cmd)
+  " -- After hook helper options -------------------------------------------------------------------
 
-  if has_key(opts, "command")
-    execute opts["command"]
+  if has_key(options, 'insert')
+    let options.after = options.after . ' | startinsert'
   endif
 
-  if has_key(opts, "insert")
-    startinsert
+  if has_key(options, 'resize')
+    let options.after = options.after . ' | resize' . options.resize
+  endif
+
+  if has_key(options, 'fixheight')
+    let options.after = options.after . ' | set winfixheight'
+  endif
+
+  " -- Execution -----------------------------------------------------------------------------------
+
+  if has_key(options, 'before')
+    let options.before = substitute(options.before, "^ *| *", "", "")
+
+    execute options.before
+  endif
+
+  call termopen(options.command)
+
+  if has_key(options, 'after')
+    let options.after = substitute(options.after, "^ *| *", "", "")
+
+    execute options.after
   endif
 endfunction
 
-function! TermOpenConsole(cmd, ...)
-  let opts     = (a:0 >= 1) ? a:1 : {}
-  let defaults = {
-  \   "location" : "window",
-  \   "command"  : "wincmd J",
-  \   "insert"   : 1,
-  \   "resize"   : 10,
-  \   "fixheight": 1
-  \ }
-
-  call extend(opts, defaults, "keep")
-
-  if has_key(opts, "resize")
-    let opts.command = opts["command"] . " | resize " . opts["resize"]
-  endif
-
-  if has_key(opts, "fixheight")
-    let opts.command = opts["command"] . " | set winfixheight"
-  endif
-
-  call TermOpen(a:cmd, opts)
-endfunction
-
-function! TermOpenCommand(cmd, ...)
-  let s:opts = {}
+function! TermOpenCommand(...)
+  let options = {}
 
   for arg in a:000
      let partials = split(arg, '=')
-     let s:opts[partials[0]] = partials[1]
+
+     if len(partials) > 1
+       let options[partials[0]] = partials[1]
+     else
+       let options[partials[0]] = 1
+     endif
   endfor
 
-  call TermOpen(a:cmd, s:opts)
+  call TermOpen(options)
 endfunction
 
-function! TermOpenConsoleCommand(cmd, ...)
-  let s:opts = {}
-
-  for arg in a:000
-     let partials = split(arg, '=')
-     let s:opts[partials[0]] = partials[1]
-  endfor
-
-  call TermOpenConsole(a:cmd, s:opts)
-endfunction
-
-command! -nargs=+ TermOpen call TermOpenCommand(<f-args>)
-command! -nargs=+ TermOpenConsole call TermOpenConsoleCommand(<f-args>)
+command! -nargs=* TermOpen call TermOpenCommand(<f-args>)
+command! -nargs=* TermOpenConsole call TermOpenCommand('console', <f-args>)
 
