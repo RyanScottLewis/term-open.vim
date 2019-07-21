@@ -6,6 +6,28 @@ A smarter `termopen` function for NeoVim.
 
 ### Plug: `Plug 'RyanScottLewis/term-open.vim'`
 
+### Vundle: `Plugin 'RyanScottLewis/term-open.vim'`
+
+### Manual
+
+> Assumes `$runtimepath` is some path from your VIM `runtimepath` variable.
+
+#### Standard
+
+```sh
+git clone https://github.com/RyanScottLewis/term-open.vim.git
+cd term-open.vim
+cp doc/term-open.txt $runtimepath/doc/
+cp plugin/term-open.vim $runtimepath/plugin/
+```
+
+#### VIM Package
+
+```sh
+cd $runtimepath/pack/bundle/start
+git clone https://github.com/RyanScottLewis/term-open.vim.git
+```
+
 ## Usage
 
 ```vim
